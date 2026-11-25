@@ -1,0 +1,51 @@
+{
+  "name": "@todrink/dsh-http",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "给 DSH agent 一个能发任意 HTTP(S) 请求的工具 http_request：方法/头/体/超时/重定向/大响应存盘，绕开 PowerShell 传中文和 JSON 的引号坑。",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18",
+    "dsh": ">=0.2.2-rc.5"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "http",
+    "https",
+    "request",
+    "tool",
+    "api",
+    "json"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "todrink",
+    "url": "https://github.com/todrinkcho"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/todrinkcho/dsh-http.git"
+  },
+  "homepage": "https://github.com/todrinkcho/dsh-http#readme",
+  "bugs": {
+    "url": "https://github.com/todrinkcho/dsh-http/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

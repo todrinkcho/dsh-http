@@ -1,0 +1,9 @@
+# @todrink/dsh-http 的 bundle patch：往 profile 插件名单里插一行。
+# 以 profile bundle 层（package.json 的 dsh.bundle.patch 字段）应用，
+# 也可以直接贴进 ~/.dsh/profiles/desktop/cordis.patch.yml 的末尾。
+- insert:
+    - id: http-tool
+      name: '@todrink/dsh-http'
+      config:
+        # 注册一个系统提示段，告诉模型什么时候该用它。
+        announceToAgent: true
