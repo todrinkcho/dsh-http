@@ -1,6 +1,6 @@
 {
   "name": "@todrink/dsh-http",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "给 DSH agent 一个能发任意 HTTP(S) 请求的工具 http_request：方法/头/体/超时/重定向/大响应存盘，绕开 PowerShell 传中文和 JSON 的引号坑。",
   "exports": {
