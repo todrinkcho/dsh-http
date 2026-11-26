@@ -71,11 +71,11 @@ const server = http.createServer((req, res) => {
     switch (url.pathname) {
       case '/text':
         res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('你好，蜗蜗壳儿 🐌');
+        res.end('你好，世界 🌍');
         break;
       case '/json':
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ ok: true, who: '蜗蜗壳儿', n: 42 }));
+        res.end(JSON.stringify({ ok: true, who: 'selftest', n: 42 }));
         break;
       case '/echo': {
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -126,7 +126,7 @@ try {
   // 1. GET 文本 + 中文
   let r = await call({ url: `${baseUrl}/text` });
   ok(r.status === 200 && r.ok === true, 'GET /text 200', JSON.stringify(r.status));
-  ok(r.bodyPreview.includes('蜗蜗壳儿'), '中文正文正确解码', JSON.stringify(r.bodyPreview));
+  ok(r.bodyPreview.includes('你好，世界'), '中文正文正确解码', JSON.stringify(r.bodyPreview));
   ok(r.binary === false, '文本不被标成二进制');
   ok(typeof r.elapsedMs === 'number' && r.elapsedMs >= 0, '有耗时');
 
@@ -136,11 +136,11 @@ try {
   ok(String(r.headers['content-type']).includes('application/json'), '响应头带 content-type');
 
   // 3. POST JSON body，自动带 Content-Type
-  r = await call({ url: `${baseUrl}/echo`, method: 'POST', json: { 名字: '蜗蜗壳儿', n: 1 } });
+  r = await call({ url: `${baseUrl}/echo`, method: 'POST', json: { 名字: '测试值', n: 1 } });
   const echoed = JSON.parse(r.bodyPreview);
   ok(echoed.method === 'POST', 'POST 方法传到服务端', echoed.method);
   ok(echoed.contentType.includes('application/json'), '自动补 Content-Type: application/json', echoed.contentType);
-  ok(JSON.parse(echoed.body).名字 === '蜗蜗壳儿', 'JSON body 中文无损', echoed.body);
+  ok(JSON.parse(echoed.body).名字 === '测试值', 'JSON body 中文无损', echoed.body);
 
   // 4. 自定义 header + 原始 body（中文）
   r = await call({

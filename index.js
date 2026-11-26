@@ -7,8 +7,8 @@
  *   - 超时、重定向开关、响应分段预览、大响应/二进制存盘
  *   - 只用 Node 内置能力（fetch / TextDecoder），不引第三方依赖
  *
- * 为什么要有它：蜗蜗壳儿在群里有 pwsh，但用 PowerShell 拼中文 body / JSON
- * 出过两次乱码事故（2026-11-10「???」），手写 curl 也容易被引号坑。
+ * 为什么要有它：shell 工具能发请求，但把中文当命令行参数传会经过编码层，
+ * 到达服务端时已经乱码（且请求发出就撤不回）；手写 curl 也容易被引号坑。
  * 有原生工具之后，HTTP 请求走参数，不经过 shell 的编码层。
  *
  * 安全边界：
@@ -48,12 +48,12 @@ const METHODS = new Set(['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIO
 
 /** 面向模型的公告：有这个工具、什么时候用。 */
 export const HTTP_TOOL_GUIDANCE = [
-  '本机已安装 **http-tool**：提供 `http_request` 工具，可以直接发任意 HTTP(S) 请求（方法 / 请求头 / JSON 或原始 body / 超时 / 重定向），不需要经过 PowerShell 或 curl。',
+  '本机已安装 **@todrink/dsh-http**，它提供 `http_request` 工具：可以直接发任意 HTTP(S) 请求（方法 / 请求头 / JSON 或原始 body / 超时 / 重定向），不需要经过 PowerShell 或 curl。',
   '**什么时候用**：调外部 API、查接口返回、POST 表单或 JSON、带 Authorization 头请求、下载文件或图片时。',
   '用它的理由：参数直接传给工具，不经过 shell 的编码层，**不会像 PowerShell 那样把中文变成 `???`，也不用跟引号搏斗**。',
   '用法：`http_request({ url, method, headers, json | body, timeout_ms, save_to })`。返回 `status` / `headers` / `bodyPreview`；非 2xx 也正常返回（看 `ok=false`），不是错误。',
   '**大响应/二进制**（图片、音频、zip、视频）要传 `save_to` 存到绝对路径，返回体只给预览，别指望在正文里看到二进制。',
-  '**安全**：不要把 Authorization、token、Cookie 的值抄进群消息或最终回答；只报状态码和结论。',
+  '**安全**：不要把 Authorization、token、Cookie 的值抄进回复、日志或最终结论；只报状态码和结论。',
   '**中文位置**：中文放 URL 参数或 body 里都行；**不要放请求头**——HTTP 头只支持 ASCII/Latin-1，工具会当场报错。',
   '只支持 http/https；默认拦 link-local 地址（云元数据），其余地址不设限。',
 ].join('\n');
