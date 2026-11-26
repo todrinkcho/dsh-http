@@ -40,34 +40,34 @@ DSH 的 shell 工具本来就能发请求（`pwsh` + `Invoke-WebRequest`、`curl
 - 正文只回预览：没给 `save_to` 时，攒够预览上限就停止下载，不把大响应当全文拉一遍。
 - 仍要守的规矩：**不要把 token / Cookie 的值抄进对话、日志或最终回答**，只报状态码和结论。
 
-## 安装状态（2026-11-14）
+## 安装
 
-已作为 profile bundle 装好并**热生效**（`plugin_manager install_bundle` + `set_plugin`，不用重启）：
+```bash
+# 图形界面：侧栏 插件 → 添加插件 → 填 @todrink/dsh-http
+# 或者让 agent 调 plugin_manager → install_bundle → @todrink/dsh-http
+dsh plugin --profile <profile> add @todrink/dsh-http
+```
 
-- profile `~/.dsh/profiles/desktop/package.json`：`dependencies["@todrink/dsh-http"] = link:…/插件/http-tool`，
-  `dsh.profile.bundles` 末尾追加 `@todrink/dsh-http`
-- bundle patch `cordis.patch.yml` 插入行 `id: http-tool`
-- 工具在宿主注册后**对所有 agent 可见**（含 `standard` preset 的飞书/QQ 会话）
+作为一个 profile bundle 装上后**热生效**，不用重启：`cordis.patch.yml` 往 profile 的插件名单里插一行
+`id: http-tool`，工具注册到宿主后**对所有 agent 可见**（含 IM / 子代理等非交互会话）。
 
 ## 关掉 / 卸载
 
-```powershell
+```bash
 # 临时关掉（热生效，行还留在 patch 里）
 plugin_manager set_plugin target=include:http-tool enabled=false
-```
 
-```powershell
 # 完全卸载
 plugin_manager remove_bundle target=@todrink/dsh-http
 ```
 
-手工兜底：从 `package.json` 的 `dependencies` 和 `dsh.profile.bundles` 里删掉
+手工兜底：从 profile 的 `package.json` 的 `dependencies` 和 `dsh.profile.bundles` 里删掉
 `@todrink/dsh-http`，再删 `node_modules/@todrink/dsh-http` junction（都在 DSH 退出后做）。
 
 ## 自测
 
-```powershell
-node 插件/http-tool/_selftest.mjs
+```bash
+node _selftest.mjs
 ```
 
 起一个本地 HTTP 服务，跑 39 条用例（文本/JSON/中文 POST/请求头/404/重定向/超时/
